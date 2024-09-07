@@ -1,4 +1,4 @@
-const asncHandler = (fn) => async (req, res, next) => {
+const asyncHandler = (fn) => async (req, res, next) => {
     try {
 
         await fn(req, res, next);
@@ -6,3 +6,6 @@ const asncHandler = (fn) => async (req, res, next) => {
         next(er);
     }
 }
+
+
+export default asyncHandler
