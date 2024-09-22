@@ -1,8 +1,11 @@
-class ApiError extends Error {
-    constructor(statusCode,
+export class ApiError extends Error {
+    constructor(
         message = "SomeThing Went Wrong!",
+        stack = "",
+        statusCode,
         errors = [],
-        stack = "",) {
+
+    ) {
 
         super(message);
         this.message = message;
@@ -21,27 +24,37 @@ class ApiError extends Error {
 }
 
 
-
-
-class TokenExpirationException extends ApiError {
+export class BadRequestException extends ApiError {
     constructor(message, stack, errors) {
-        super(message, stack, statusCode, statusCode = 401, errors);
-    }
-}
-class UnauthorizationException extends ApiError {
-    constructor(message, stack, errors) {
-        super(message, stack, statusCode, statusCode = 403, errors);
-    }
-}
-class NotFoundException extends ApiError {
-    constructor(message, stack, errors) {
-        super(message, stack, statusCode, statusCode = 404, errors);
+        super({ statusCode: 400, errors, message, stack })
     }
 }
 
-class LimitExceededException extends ApiError {
+export class TokenExpirationException extends ApiError {
+    constructor(stack, errors) {
+        super("JWT Token Expired!", stack, 401, errors);
+    }
+}
+export class UnauthorizationException extends ApiError {
+    constructor(stack, errors) {
+        super("User is unauthorized!", stack, 403, errors);
+    }
+}
+export class NotFoundException extends ApiError {
+    constructor(stack, errors) {
+        super("Not found...", stack, 404, errors);
+    }
+}
+
+export class LimitExceededException extends ApiError {
+    constructor(stack, errors) {
+        super("Limit exceeded!", stack, 408, errors);
+    }
+}
+
+export class ConflictException extends ApiError {
     constructor(message, stack, errors) {
-        super(message, stack, statusCode, statusCode = 408, errors);
+        super(mesasge, stack, 409, errors);
     }
 }
 

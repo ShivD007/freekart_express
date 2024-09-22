@@ -1,32 +1,39 @@
 import mongoose from "mongoose";
 import express from 'express';
 import connectDB from "./services/db.js";
-import e from "express";
-
-
-require('dotenv').config({ path: './env' })
+import userRoutes from './routes/user.routes.js'
+import { ApiError, NotFoundException } from './response/apiError.js'
+import { ApiResponse } from './response/response.js'
 const app = express();
 
 
-
-
+app.use(express.json({ limit: "16kb" }))
+app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 
 
 connectDB((req, res, next) => {
     app.listen(process.env.PORT, (e) => {
-        console.log(e);
+        console.log(`Listenning to ${process.env.PORT}`);
     });
-})
+})();
+
+// routes
+app.use("/api/v1/users", userRoutes);
 
 
+
+// error handling
 app.all("*", (req, res, next) => {
-    next(NotFoundException(`${req.url} not found on server`));
+    next(new NotFoundException(`${req.url} not found on server`));
 })
 
 app.use((error, req, res, next) => {
     if (error instanceof ApiError) {
         res.status(error.statusCode || 500)
-            .send(ApiResponse(error.statusCode, error.message, error.data))
+            .send(new ApiResponse(error.statusCode, error.message, error.data))
+    } else {
+        res.status(error.statusCode || 500)
+            .send(new ApiResponse(error.statusCode, error.message))
     }
 })
 
