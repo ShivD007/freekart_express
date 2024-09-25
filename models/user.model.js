@@ -2,10 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 
 const userSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true
-    },
+
     fullName: {
         type: String,
         required: true,
@@ -28,6 +25,12 @@ const userSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: "addressSchema"
     },
+
+    refreshToken: {
+        type: String,
+        required: true
+    }
+
 
 
 }, { timestamps: true });

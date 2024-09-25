@@ -26,7 +26,7 @@ export class ApiError extends Error {
 
 export class BadRequestException extends ApiError {
     constructor(message, stack, errors) {
-        super({ statusCode: 400, errors, message, stack })
+        super(message, stack, 400, errors)
     }
 }
 
@@ -54,7 +54,12 @@ export class LimitExceededException extends ApiError {
 
 export class ConflictException extends ApiError {
     constructor(message, stack, errors) {
-        super(mesasge, stack, 409, errors);
+        super(message, stack, 409, errors);
+    }
+}
+export class UniversalApiError extends ApiError {
+    constructor(message, statusCode) {
+        super(message, statusCode);
     }
 }
 

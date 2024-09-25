@@ -30,10 +30,10 @@ app.all("*", (req, res, next) => {
 app.use((error, req, res, next) => {
     if (error instanceof ApiError) {
         res.status(error.statusCode || 500)
-            .send(new ApiResponse(error.statusCode, error.message, error.data))
+            .send(new ApiResponse({ status: error.statusCode, message: error.message, data: error.data }))
     } else {
         res.status(error.statusCode || 500)
-            .send(new ApiResponse(error.statusCode, error.message))
+            .send(new ApiResponse({ status: error.statusCode, message: error.message, data: error.data }))
     }
 })
 
