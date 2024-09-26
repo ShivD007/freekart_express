@@ -24,10 +24,12 @@ app.use("/api/v1/users", userRoutes);
 
 // error handling
 app.all("*", (req, res, next) => {
+
     next(new NotFoundException(`${req.url} not found on server`));
 })
 
 app.use((error, req, res, next) => {
+
     if (error instanceof ApiError) {
         res.status(error.statusCode || 500)
             .send(new ApiResponse({ status: error.statusCode, message: error.message, data: error.data }))

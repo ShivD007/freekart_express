@@ -36,8 +36,8 @@ export class TokenExpirationException extends ApiError {
     }
 }
 export class UnauthorizationException extends ApiError {
-    constructor(stack, errors) {
-        super("User is unauthorized!", stack, 403, errors);
+    constructor(stack, errors, { message }) {
+        super(message || "User is unauthorized!", stack, 403, errors);
     }
 }
 export class NotFoundException extends ApiError {

@@ -6,7 +6,6 @@ const userSchema = new mongoose.Schema({
     fullName: {
         type: String,
         required: true,
-        unique: true,
     },
 
     email: {
@@ -20,19 +19,15 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    password: {
+        type: String,
+        required: true
+    },
 
     address: {
         type: Schema.Types.ObjectId,
         ref: "addressSchema"
-    },
-
-    refreshToken: {
-        type: String,
-        required: true
     }
-
-
-
 }, { timestamps: true });
 
 
