@@ -4,6 +4,7 @@ import connectDB from "./services/db.js";
 import userRoutes from './routes/user.routes.js'
 import { ApiError, NotFoundException } from './response/apiError.js'
 import { ApiResponse } from './response/response.js'
+import { createTokenUsingRefreshToken as generateToken, tokenAuthentication } from "./controllers/token_controller.js";
 const app = express();
 
 
@@ -19,12 +20,15 @@ connectDB((req, res, next) => {
 
 // routes
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/generateToken", generateToken);
 
+
+
+app.use(tokenAuthentication);
 
 
 // error handling
 app.all("*", (req, res, next) => {
-
     next(new NotFoundException(`${req.url} not found on server`));
 })
 

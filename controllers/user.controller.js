@@ -8,7 +8,8 @@ import { AppStrings } from "../constants/app.strings.js";
 import { ApiResponse } from "../response/response.js";
 import bcrypt from "bcrypt";
 import { passwordSaltCount as passwordSaltRound } from "../constants/app.constant.js";
-import jwt from "jsonwebtoken"
+import { createToken } from "./token_controller.js";
+
 
 const registerUser = asyncHandler(async (req, res, next) => {
 
@@ -18,7 +19,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
       })) {
             next(new BadRequestException(AppStrings.allParamsRequired));
       }
- 
+
 
       const existedUser = User.findOne({ email: email });
       console.log(existedUser);
@@ -71,7 +72,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
       }
 
 
-      const user = await User.findOne({ $where: email }).select("-password");
+      const user = await User.findOne({ email: email });
       console.log(user);
       if (!user) {
             next(new NotFoundException())
@@ -83,13 +84,16 @@ const loginUser = asyncHandler(async (req, res, next) => {
             throw new UnauthorizationException({ message: AppStrings.allParamsRequired });
       }
 
-      const refreshToken = jwt.sign(user, process.env.JWT_KEY, { expiresIn: 24 * 10 * 60 })
-      const accessToken = jwt.sign(user, process.env.JWT_KEY, { expiresIn: 24 * 60 })
+      delete user.password;
+
+      const refreshToken = createToken({ payload: { email: user.email, phoneNo: user.phoneNo, id: user._id }, expiryTime: 24 })
+      const accessToken = createToken({ payload: { email: user.email, phoneNo: user.phoneNo, id: user._id }, expiryTime: 1 })
+
 
 
       res.status(200).send(new ApiResponse({
             status: 200, message: "User Logined successfully!",
-            data: { ...user, refreshToken, accessToken },
+            data: { ...{ id: user._id, email: user.email, phoneNo: user.phoneNo }, refreshToken, accessToken },
       },
       ));
 })
