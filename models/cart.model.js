@@ -2,11 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 
 const cartSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true
-    },
-
     productId: {
         type: String,
         required: true
@@ -20,13 +15,13 @@ const cartSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId, ref: "SubProduct"
     }],
 
-    frequentVariant: {
-        type: Schema.Types.ObjectId, ref: "SubProduct"
-    },
-
     association: {
         type: Schema.Types.ObjectId,
         ref: "User"
+    },
+    quantity: {
+        type: Number,
+        required: true
     }
 
 }, { timestamps: true });

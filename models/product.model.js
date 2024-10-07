@@ -2,10 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 
 const productSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true
-    },
     name: {
         type: String,
         required: true
@@ -20,6 +16,7 @@ const productSchema = new mongoose.Schema({
     frequentVariant: {
         type: Schema.Types.ObjectId, ref: "SubProduct"
     },
+    
 
 }, { timestamps: true });
 

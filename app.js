@@ -5,6 +5,7 @@ import userRoutes from './routes/user.routes.js'
 import { ApiError, NotFoundException } from './response/apiError.js'
 import { ApiResponse } from './response/response.js'
 import { createTokenUsingRefreshToken as generateToken, tokenAuthentication } from "./controllers/token_controller.js";
+import { getCategories, setCategory } from "./controllers/category_controller.js";
 const app = express();
 
 
@@ -21,10 +22,17 @@ connectDB((req, res, next) => {
 // routes
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/generateToken", generateToken);
-
+app.use("api/v1/getCategories", getCategories);
 
 
 app.use(tokenAuthentication);
+//-----------------------Admin------------------------------//
+
+//admin
+app.use("api/v1/admin/setCategory", setCategory);
+
+
+//-----------------------Admin-end------------------------------//
 
 
 // error handling

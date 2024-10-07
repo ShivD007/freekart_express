@@ -2,14 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 
 const subProductSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true
-    },
-    productId: {
-        type: String,
-        required: true
-    },
     name: {
         type: String,
         required: true,
@@ -33,9 +25,6 @@ const subProductSchema = new mongoose.Schema({
     sku: {
         type: String,
         required: true
-    },
-    category: {
-        type: Schema.Types.ObjectId, ref: "Category"
     },
     images: [{
         type: String,

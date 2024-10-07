@@ -22,5 +22,5 @@ const offerSchema = new mongoose.Schema({
 
 
 
-export const Product = mongoose.model("Product", productSchema)
+export const Offer = mongoose.model("Offer", offerSchema)
 

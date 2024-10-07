@@ -1,3 +1,5 @@
+import { AppStrings } from "../constants/app.strings";
+
 export class ApiError extends Error {
     constructor(
         message = "SomeThing Went Wrong!",
@@ -58,8 +60,14 @@ export class ConflictException extends ApiError {
     }
 }
 export class UniversalApiError extends ApiError {
-    constructor(message, statusCode) {
-        super(message, statusCode);
+    constructor(message, stack, statusCode) {
+        super(message, stack, statusCode);
+    }
+}
+
+export class ServerApiError extends ApiError {
+    constructor(message, stack) {
+        super(message || AppStrings.serverError, stack, 500);
     }
 }
 

@@ -11,7 +11,7 @@ const createToken = ({ payload, expiryTime }) => {
 }
 
 const tokenAuthentication = asyncHandler(async (req, res, next) => {
-    const token = req.body.accessToken;
+    const token = req.body.accessToken || req.query.params.accessToken;
     if (!token) {
         next(new BadRequestException("Jwt Token Required!"))
     }
@@ -22,7 +22,6 @@ const tokenAuthentication = asyncHandler(async (req, res, next) => {
             next(new BadRequestException(error.message));
         }
     });
-    console.log(decodedPassword);
     next();
 })
 
