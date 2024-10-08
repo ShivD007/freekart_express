@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { SubProduct } from "./sub_product.model.js";
 
 
 const productSchema = new mongoose.Schema({
@@ -9,14 +10,9 @@ const productSchema = new mongoose.Schema({
     category: {
         type: Schema.Types.ObjectId, ref: "Category"
     },
-    variants: [{
-        type: Schema.Types.ObjectId, ref: "SubProduct"
-    }],
+    variants: [SubProduct],
 
-    frequentVariant: {
-        type: Schema.Types.ObjectId, ref: "SubProduct"
-    },
-    
+    frequentVariant: SubProduct,
 
 }, { timestamps: true });
 

@@ -15,3 +15,13 @@
 
 // Note 2: Pagination
 // getAllProduct- product_controller.js
+
+
+// Note 3: Important
+//find inside a reference
+// Query to find a product with the given subProductId
+//  const product = await Product.findOne({
+//     subProducts: {
+//       $elemMatch: { subProductId: mongoose.Types.ObjectId(subProductId) }
+//     }
+//   });

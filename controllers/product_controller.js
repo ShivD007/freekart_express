@@ -44,10 +44,10 @@ const getProduct = asyncHandler(async (req, res, next) => {
 
 const getAllProduct = asyncHandler(async (req, res, next) => {
 
-    const page = parseInt(req.query.page) || 1;  // Default to page 1
-    const limit = parseInt(req.query.limit) || 5;  // Default to 5 users per page
+    const page = parseInt(req.body.page) || 1;  // Default to page 1
+    const limit = parseInt(req.body.limit) || 5;  // Default to 5 users per page
 
-    const categoryId = req.query.categoryId;
+    const categoryId = req.body.categoryId;
 
     const startIndex = (page - 1) * limit;
 
@@ -62,7 +62,6 @@ const getAllProduct = asyncHandler(async (req, res, next) => {
     // Populate related fields (category and variants)
     query = query
         .populate("category")
-        .populate("variants")   // Populate the 'variants' field
         .limit(limit)           // Limit the number of products per page
         .skip(startIndex);      // Skip to the correct page
 
@@ -74,3 +73,7 @@ const getAllProduct = asyncHandler(async (req, res, next) => {
     }
     res.status(200).send(new ApiResponse({ status: 200, message: "Success!", data: { "products": products, page: page + 1, limit: limit } }))
 },)
+
+
+
+export { setProduct, getAllProduct, getProduct }

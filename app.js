@@ -6,6 +6,8 @@ import { ApiError, NotFoundException } from './response/apiError.js'
 import { ApiResponse } from './response/response.js'
 import { createTokenUsingRefreshToken as generateToken, tokenAuthentication } from "./controllers/token_controller.js";
 import { getCategories, setCategory } from "./controllers/category_controller.js";
+import productRouter from "./routes/product.route.js"
+import categoryRouter from "./routes/category.route.js"
 const app = express();
 
 
@@ -29,11 +31,12 @@ app.use(tokenAuthentication);
 //-----------------------Admin------------------------------//
 
 //admin
-app.use("api/v1/admin/setCategory", setCategory);
+app.use("api/v1/admin/setCategory", categoryRouter);
 
 
 //-----------------------Admin-end------------------------------//
 
+app.use("api/v1/product", productRouter);
 
 // error handling
 app.all("*", (req, res, next) => {

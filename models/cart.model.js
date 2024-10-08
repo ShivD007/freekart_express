@@ -6,27 +6,33 @@ const cartSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    name: {
+    variantId: {
         type: String,
         required: true
     },
-
-    variants: [{
-        type: Schema.Types.ObjectId, ref: "SubProduct"
-    }],
-
     association: {
         type: Schema.Types.ObjectId,
-        ref: "User"
+        ref: "User",
+        required: true
     },
     quantity: {
         type: Number,
         required: true
+    },
+    mrp: {
+        type: Number,
+        required: true
+    },
+    discount: {
+        type: Number,
+    },
+    priceAfterDiscount: {
+        type: Number,
     }
 
 }, { timestamps: true });
 
 
 
-export const User = mongoose.model("Cart", cartSchema)
+export const Cart = mongoose.model("Cart", cartSchema)
 
