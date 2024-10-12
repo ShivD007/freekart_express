@@ -3,6 +3,7 @@ import { Product } from "../models/product.model";
 import { BadRequestException, ServerApiError } from "../response/apiError.js";
 import asyncHandler from "../response/asyncHandler";
 import { ApiResponse } from "../response/response";
+import { getCartItems } from "./cart_controller";
 
 const setProduct = asyncHandler(async (req, res, next) => {
     const { product } = req.body;
@@ -75,5 +76,47 @@ const getAllProduct = asyncHandler(async (req, res, next) => {
 },)
 
 
+const deleteProduct = asyncHandler(async (req, res, next) => {
+    const productId = req.query.id;
+    await Product.deleteOne({ _id: productId })
 
-export { setProduct, getAllProduct, getProduct }
+})
+
+const updateProduct = asyncHandler(async (req, res, next) => {
+    const { product } = req.body;
+
+    // Check if variants is an array
+    if (!Array.isArray(product["variants"])) {
+        throw new BadRequestException('Invalid input, expected an array of books')
+    }
+
+    const updatedProduct = await Product.findOneAndreplace({ _id: product.id }, { product }, { upsert: false })
+
+    if (!updatedProduct) {
+        throw new ServerApiError(AppStrings.notAbleToCreateEntry);
+    }
+
+
+
+    res.status(200).send(new ApiResponse({ status: 200, message: "Success!", data: updatedProduct }))
+},)
+
+const removeCategory = asyncHandler(async (req, res, next) => {
+    const { productId, variantId } = req.body;
+
+    const updatedProduct = await Product.findByIdAndUpdate(productId, {
+        "$pull": { _id: variantId },
+    },
+        { upsert: false, new: false }
+
+    );
+    if (!updatedProduct) {
+        throw new ServerApiError(AppStrings.notAbleToCreateEntry);
+
+    }
+    res.status(200).send(new ApiResponse({ status: 200, message: "Success!", data: null }))
+
+});
+
+
+export { setProduct, getAllProduct, getProduct, updateProduct, deleteProduct, removeCategory }

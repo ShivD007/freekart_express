@@ -3,7 +3,7 @@ import { AppStrings } from "../constants/app.strings.js";
 import { Cart } from "../models/cart.model.js";
 import { Product } from "../models/product.model.js";
 import { User } from "../models/user.model.js";
-import { BadRequestException } from "../response/apiError.js";
+import { BadRequestException, ServerApiError } from "../response/apiError.js";
 import asyncHandler from "../response/asyncHandler.js";
 import { ApiResponse } from "../response/response.js";
 
@@ -79,31 +79,59 @@ const getCartItems = asyncHandler(async (req, res, next) => {
 
 
 const updateCart = asyncHandler(async (req, res, next) => {
-      const { cartId, quantity } = req.body;
+      const { cartId, productId, variantId, quantity } = req.body;
 
       const cart = await Cart.findById(cartId)
 
-      if (!cart) {
-            res.status(200).send(new ApiResponse({ status: 200, message: AppStrings.successful, data: [] }))
+      if (quantity == 0) {
+            deleteItemFromCart(cartId)
       }
 
+      const subProduct = (await Product.findById(productId)).variants.id(variantId);
 
-      let mrp = 0;
-      let discount = 0;
-      let priceAfterDiscount = 0;
-      cart.map((e) => {
-            mrp += e.mrp
-            if (e.discount)
-                  discount += e.discount
-            priceAfterDiscount += e.priceAfterDiscount
-      });
-      res.status(200).send(new ApiResponse({
-            status: 200, message: AppStrings.successful, data: {
-                  products: cart,
+      const mrp = subProduct.mrp;
+      const discount = subProduct.discount;
+      const priceAfterDiscount = discount == null ? mrp : mrp - discount;
+
+
+      const cartItem = await Cart.findByIdAndUpdate({
+            _id: cartId
+      }, {
+            $set: {
+                  quantity: quantity,
                   mrp: mrp,
                   discount: discount,
                   priceAfterDiscount: priceAfterDiscount
             }
-      }),
-      )
+      },
+
+            { upsert: false }
+      );
+      if (!cartItem) {
+            throw new ServerApiError(AppStrings.notAbleToCreateEntry);
+
+      }
+
+      res.status(200).send(new ApiResponse({ status: 200, message: AppStrings.successful, data: cartItem }))
+
 })
+
+
+const deleteFromCart = asyncHandler(async (req, res, next) => {
+
+      const { cartId } = req.body;
+
+      await deleteItemFromCart(cartId);
+
+})
+
+
+
+const deleteItemFromCart = async (cartId) => {
+
+      await Cart.deleteOne(cartId)
+
+}
+
+
+export { addToCart, getCartItems, updateCart, deleteFromCart }

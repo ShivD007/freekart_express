@@ -7,6 +7,7 @@ import { ApiResponse } from './response/response.js'
 import { createTokenUsingRefreshToken as generateToken, tokenAuthentication } from "./controllers/token_controller.js";
 import { getCategories, setCategory } from "./controllers/category_controller.js";
 import productRouter from "./routes/product.route.js"
+import cartRouter from "./routes/cart.routes.js"
 import categoryRouter from "./routes/category.route.js"
 const app = express();
 
@@ -37,6 +38,7 @@ app.use("api/v1/admin/setCategory", categoryRouter);
 //-----------------------Admin-end------------------------------//
 
 app.use("api/v1/product", productRouter);
+app.use("api/v1/cart", cartRouter);
 
 // error handling
 app.all("*", (req, res, next) => {
