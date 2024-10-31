@@ -5,6 +5,8 @@ export class AppStrings {
     static serverError = "Server Error!";
     static notAbleToCreateEntry = "Not able to create entry";
     static noItemFound = "No any item found!";
+    static invalidInput = "Invalid Input";
     static successful = "Successful!";
+    static userNotFound = "User not Found";
 
 }

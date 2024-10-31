@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 
-const cartSchema = new mongoose.Schema({
+const orderSchema = new mongoose.Schema({
     id: {
         type: String,
         required: true
@@ -37,5 +37,5 @@ const cartSchema = new mongoose.Schema({
 
 
 
-export const User = mongoose.model("Cart", cartSchema)
+export const Order = mongoose.model("Order", orderSchema)
 

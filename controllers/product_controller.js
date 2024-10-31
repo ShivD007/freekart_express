@@ -46,8 +46,10 @@ const getProduct = asyncHandler(async (req, res, next) => {
 const getAllProduct = asyncHandler(async (req, res, next) => {
 
     const page = parseInt(req.body.page) || 1;  // Default to page 1
-    const limit = parseInt(req.body.limit) || 5;  // Default to 5 users per page
-
+    const limit = parseInt(req.body.limit) || 10;  // Default to 5 users per page
+    if (limit <= 0 || page <= 0) {
+        next(new BadRequestException(AppStrings.invalidInput))
+    }
     const categoryId = req.body.categoryId;
 
     const startIndex = (page - 1) * limit;
@@ -112,10 +114,8 @@ const removeCategory = asyncHandler(async (req, res, next) => {
     );
     if (!updatedProduct) {
         throw new ServerApiError(AppStrings.notAbleToCreateEntry);
-
     }
     res.status(200).send(new ApiResponse({ status: 200, message: "Success!", data: null }))
-
 });
 
 

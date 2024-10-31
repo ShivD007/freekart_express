@@ -9,6 +9,7 @@ import { getCategories, setCategory } from "./controllers/category_controller.js
 import productRouter from "./routes/product.route.js"
 import cartRouter from "./routes/cart.routes.js"
 import categoryRouter from "./routes/category.route.js"
+import addressRouter from "./routes/address.route.js"
 const app = express();
 
 
@@ -25,7 +26,6 @@ connectDB((req, res, next) => {
 // routes
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/generateToken", generateToken);
-app.use("api/v1/getCategories", getCategories);
 
 
 app.use(tokenAuthentication);
@@ -39,6 +39,8 @@ app.use("api/v1/admin/setCategory", categoryRouter);
 
 app.use("api/v1/product", productRouter);
 app.use("api/v1/cart", cartRouter);
+app.use("api/v1/address", addressRouter);
+app.use("api/v1/getCategories", getCategories);
 
 // error handling
 app.all("*", (req, res, next) => {
