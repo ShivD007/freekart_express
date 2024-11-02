@@ -103,7 +103,7 @@ const updateProduct = asyncHandler(async (req, res, next) => {
     res.status(200).send(new ApiResponse({ status: 200, message: "Success!", data: updatedProduct }))
 },)
 
-const removeCategory = asyncHandler(async (req, res, next) => {
+const removeProductVariant = asyncHandler(async (req, res, next) => {
     const { productId, variantId } = req.body;
 
     const updatedProduct = await Product.findByIdAndUpdate(productId, {
@@ -119,4 +119,4 @@ const removeCategory = asyncHandler(async (req, res, next) => {
 });
 
 
-export { setProduct, getAllProduct, getProduct, updateProduct, deleteProduct, removeCategory }
+export { setProduct, getAllProduct, getProduct, updateProduct, deleteProduct, removeProductVariant }

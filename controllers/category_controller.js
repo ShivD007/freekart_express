@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException } from "../response/apiError.js";
+import { BadRequestException, ConflictException, NotFoundException } from "../response/apiError.js";
 import asyncHandler from "../response/asyncHandler.js";
 import { AppStrings } from "../constants/app.strings.js";
 import { Category } from "../models/category.model.js";
@@ -14,11 +14,35 @@ const setCategory = asyncHandler(async (req, res, next) => {
 
     const category = await Category.findOne({ name: name.trim() });
 
-    if (category) throw new ConflictException("An Entry is already present in database.")
+    if (category) throw new ConflictException(AppStrings.anEntryExists)
 
     const savedCategory = await Category.create({ name: name, image: image });
 
     res.status(200).send(new ApiResponse({ status: 200, message: "Category Created!", data: savedCategory }))
+});
+
+// this is update category
+const updateCategory = asyncHandler(async (req, res, next) => {
+    const { image, name, id } = req.body;
+
+    if (id.trim() === "") throw new BadRequestException(AppStrings.allParamsRequired)
+
+
+    const category = await Category.findOne({ name: name.trim() });
+
+    const document = {}
+    if (name != null && name != "") {
+        document["name"] = name;
+    }
+    if (image != null && image != "") {
+        document["image"] = image;
+    }
+
+    if (category) throw new NotFoundException(AppStrings.noEntryFoundWithProvidedId)
+
+    const updatedCategory = await Category.findOneAndUpdate({ _id: id }, document, { new: true });
+
+    res.status(200).send(new ApiResponse({ status: 200, message: "Category Updated!", data: updatedCategory }))
 });
 
 
@@ -36,4 +60,4 @@ const getCategories = asyncHandler(async (req, res, next) => {
 
 
 
-export { setCategory, getCategories }
+export { setCategory, updateCategory, getCategories }

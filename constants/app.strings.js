@@ -8,5 +8,6 @@ export class AppStrings {
     static invalidInput = "Invalid Input";
     static successful = "Successful!";
     static userNotFound = "User not Found";
-
+    static anEntryExists = "An Entry is already exists";
+    static noEntryFoundWithProvidedId = "No entry found with provided id";
 }

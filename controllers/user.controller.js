@@ -1,5 +1,3 @@
-import express from "express";
-import mongoose from "mongoose";
 import { ApiError, NotFoundException, ServerApiError, UnauthorizationException, UniversalApiError } from "../response/apiError.js"
 import { BadRequestException } from "../response/apiError.js"
 import { User } from '../models/user.model.js'

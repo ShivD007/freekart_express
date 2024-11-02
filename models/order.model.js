@@ -1,6 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 
-
 const orderSchema = new mongoose.Schema({
     id: {
         type: String,
