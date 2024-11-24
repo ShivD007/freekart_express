@@ -18,6 +18,7 @@ getAllProduct- product_controller.js
 
 
 Note 3: Important
+-----------------------------------------------------------------------
 find inside a reference
 Query to find a product with the given subProductId
  const product = await Product.findOne({
@@ -30,7 +31,7 @@ Query to find a product with the given subProductId
 const product = await Product.findOne({
     'subProducts.subProductId': mongoose.Types.ObjectId(subProductId)
   });
-
+------------------------------------------------------------------------
 
 Note 4:  Update
 

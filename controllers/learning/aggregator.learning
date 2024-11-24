@@ -12,12 +12,9 @@ Aggregator
 
 
 
-
-
-
 ## Aggregation Operators:
 
-  Note : $push operator to push into Array
+  Note :  $push: operator to push into Array
           $count: "newFieldName" this newFied will have count value
           $all: check this when need its like [].contains() in dart
 
@@ -134,3 +131,13 @@ Note: get index value of a array
 
 in field we are not using $ while in value we need $
  example is Group section...
+
+
+
+
+
+
+
+
+Note: image that is having comparison between simple cmds and Aggregator commands
+resource: aggregator_likequeries

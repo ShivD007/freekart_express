@@ -1,0 +1,28 @@
+Custom Validator:
+
+validate: {
+      isAsync: true, // Optional in newer Mongoose versions
+      validator: async function (email) {
+        const count = await mongoose.models.User.countDocuments({ email });
+        return count === 0; // Return true if email is unique
+      },
+      message: props => `${props.value} is already in use.`
+    }
+
+
+Context-Aware Custom Validators
+
+Custom validators can also access other fields in the document by using this. 
+However, this will only refer to the document context if used in document creation
+or in update operations with context: 'query':
+
+ validate: {
+      validator: function (value) {
+        // Check if confirmPassword matches password
+        return value === this.password;
+      },
+      message: 'Passwords do not match!'
+    }
+
+Note: If we are using Context-Aware Validator the while updating we need to have this option
+ { runValidators: true, context: 'query' }

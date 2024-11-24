@@ -22,10 +22,7 @@ const subProductSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    sku: {
-        type: String,
-        required: true
-    },
+
     images: [{
         type: String,
         required: true

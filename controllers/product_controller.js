@@ -3,7 +3,6 @@ import { Product } from "../models/product.model";
 import { BadRequestException, ServerApiError } from "../response/apiError.js";
 import asyncHandler from "../response/asyncHandler";
 import { ApiResponse } from "../response/response";
-import { getCartItems } from "./cart_controller";
 
 const setProduct = asyncHandler(async (req, res, next) => {
     const { product } = req.body;

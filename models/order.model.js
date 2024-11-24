@@ -1,40 +1,71 @@
 import mongoose, { Schema } from "mongoose";
+import { User } from "./user.model";
+
+
+// Define a schema for the status and timestamp list
+const orderStatusSchema = new Schema({
+    status: {
+        type: String,
+        required: true,  // status is required
+    },
+    timeStamp: {
+        type: Date,
+        required: true,  // timeStamp is required
+    },
+});
+
 
 const orderSchema = new mongoose.Schema({
     id: {
         type: String,
         required: true
     },
+    items:
+        [{
+            productId: {
+                type: String,
+                required: true
+            },
 
-    productId: {
-        type: String,
+
+            quantity: {
+                type: Number,
+                required: true
+            },
+        }
+        ],
+    mrp: {
+        type: Number,
         required: true
     },
-    name: {
-        type: String,
+    discount: {
+        type: Number,
+    },
+    priceAfterDiscount: {
+        type: Number,
         required: true
     },
-
-    variants: [{
+    variantsId: {
         type: Schema.Types.ObjectId, ref: "SubProduct"
-    }],
-
+    },
     association: {
-        type: Schema.Types.ObjectId,
-        ref: "User"
+        type: User,
+        required: true
     },
-
-    orderStatus: {
-        type: String
-    },
+    orderStatus: [orderStatusSchema],
 
     address: {
-        type: Schema.Types.ObjectId,
-        ref: "addressSchema"
+        type: String,
+        required: true
+    },
+    isOrderCompleted: {
+        type: Boolean,
+        required: true
     }
 }, { timestamps: true });
 
 
 
 export const Order = mongoose.model("Order", orderSchema)
+export const OrderStatus = mongoose.model("OrderStatus", orderStatusSchema)
 

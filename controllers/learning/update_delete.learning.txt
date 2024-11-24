@@ -17,6 +17,12 @@ Options
 new: If set to true, returns the modified document rather than the original.
 upsert: If set to true, creates a new document if no document matches the query.
 runValidators: If set to true, runs schema validators on the update.
+omitUndefined: When updating a document, omitUndefined ensures that undefined 
+               values in the update query are ignored, rather than setting the field to undefined.
+strict: The strict option controls whether fields not defined in the schema are allowed in the update. This option can be set at the schema level or passed as an option in individual updates.
+    strict: true: Only schema-defined fields are allowed.
+    strict: false: Allows fields not defined in the schema.
+
 
 
 Update Operators
@@ -28,7 +34,7 @@ $pull: Removes an item from an array.
 
 
 
-Important Note: { timestamps: true } to ensure updatedAt timestamp updation...44
+Important Note: { timestamps: true } to ensure updatedAt timestamp updation...
 
 
 
