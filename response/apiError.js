@@ -1,4 +1,4 @@
-import { AppStrings } from "../constants/app.strings";
+import { AppStrings } from "../constants/app.strings.js";
 
 export class ApiError extends Error {
     constructor(

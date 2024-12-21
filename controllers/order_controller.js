@@ -1,22 +1,21 @@
-import { AppStrings } from "../constants/app.strings";
-import { Cart } from "../models/cart.model";
-import { Order, OrderStatus } from "../models/order.model";
-import { Product } from "../models/product.model";
-import { User } from "../models/user.model";
-import { BadRequestException, NotFoundException, ServerApiError } from "../response/apiError";
-import asyncHandler from "../response/asyncHandler";
-import { ApiResponse } from "../response/response";
+import { AppStrings } from "../constants/app.strings.js";
+import { Cart } from "../models/cart.model.js";
+import { Order, OrderStatus } from "../models/order.model.js";
+import { Product } from "../models/product.model.js";
+import { User } from "../models/user.model.js";
+import { BadRequestException, NotFoundException, ServerApiError } from "../response/apiError.js";
+import asyncHandler from "../response/asyncHandler.js";
+import { ApiResponse } from "../response/response.js";
 import mongoose from "mongoose";
+
 const addOrder = asyncHandler(async (req, res, next) => {
 
     const { userId } = req.body;
     if (!userId) next(new BadRequestException())
 
     const currentCartItems = await Cart.find({
-        association: {
-            $elemMatch: { id: mongoose.Types.ObjectId(userId) }
-        }
-    });
+        association: mongoose.Types.ObjectId(userId)
+    }).populate("association");
 
     if (!currentCartItems) next(new NotFoundException());
 
@@ -55,10 +54,8 @@ const addOrder = asyncHandler(async (req, res, next) => {
 
     if (!order) next(new ServerApiError());
     await Cart.deleteMany({
-        association: {
-            $elemMatch: { id: mongoose.Types.ObjectId(userId) }
-        }
-    })
+        association: mongoose.Types.ObjectId(userId)
+    }).populate("association")
 
     res.status(200).send(new ApiResponse({ status: 200, message: AppStrings.successful, data: null }))
 });
@@ -67,10 +64,8 @@ const addOrder = asyncHandler(async (req, res, next) => {
 const getUserOrder = asyncHandler(async (req, res, next) => {
     const userId = req.body;
     const order = await Order.find({
-        "$elemMatch": {
-            "association": mongoose.Types.ObjectId(userId)
-        }
-    })
+        association: mongoose.Types.ObjectId(userId)
+    }).populate("association")
 
     if (!order) next(res.status(200).send(new ApiResponse({
         status: 200,

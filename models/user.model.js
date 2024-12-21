@@ -1,4 +1,5 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
+const { Schema } = mongoose;
 
 
 const userSchema = new mongoose.Schema({
@@ -26,7 +27,7 @@ const userSchema = new mongoose.Schema({
 
     address: {
         type: Schema.Types.ObjectId,
-        ref: "addressSchema"
+        ref: "Address"
     }
 }, { timestamps: true });
 
