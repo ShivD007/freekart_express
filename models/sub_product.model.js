@@ -30,6 +30,6 @@ const subProductSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
-
-export const SubProduct = mongoose.model("SubProduct", subProductSchema)
+const SubProduct = mongoose.model("SubProduct", subProductSchema)
+export {SubProduct, subProductSchema}
 

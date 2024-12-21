@@ -49,7 +49,7 @@ const orderSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId, ref: "SubProduct"
     },
     association: {
-        type: User,
+        type: Schema.Types.ObjectId, ref: "User",
         required: true
     },
     orderStatus: [orderStatusSchema],

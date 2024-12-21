@@ -1,8 +1,8 @@
-import { AppStrings } from "../constants/app.strings";
-import { Product } from "../models/product.model";
+import { AppStrings } from "../constants/app.strings.js";
+import { Product } from "../models/product.model.js";
 import { BadRequestException, ServerApiError } from "../response/apiError.js";
-import asyncHandler from "../response/asyncHandler";
-import { ApiResponse } from "../response/response";
+import asyncHandler from "../response/asyncHandler.js";
+import { ApiResponse } from "../response/response.js";
 
 const setProduct = asyncHandler(async (req, res, next) => {
     const { product } = req.body;
@@ -96,9 +96,6 @@ const updateProduct = asyncHandler(async (req, res, next) => {
     if (!updatedProduct) {
         throw new ServerApiError(AppStrings.notAbleToCreateEntry);
     }
-
-
-
     res.status(200).send(new ApiResponse({ status: 200, message: "Success!", data: updatedProduct }))
 },)
 

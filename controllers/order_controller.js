@@ -44,7 +44,7 @@ const addOrder = asyncHandler(async (req, res, next) => {
             mrp: mrp,
             discount: discount,
             priceAfterDiscount: priceAfterDiscount,
-            association: user,
+            association: user._id,
             orderStatus: [currentOrderSchema],
             address: user.address,
             isOrderCompleted: false,
