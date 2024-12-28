@@ -11,6 +11,8 @@ import cartRouter from "./routes/cart.route.js"
 import orderRouter from "./routes/order.route.js"
 import categoryRouter from "./routes/category.route.js"
 import addressRouter from "./routes/address.route.js"
+import offerRouter from "./routes/offer.route.js"
+import dashBoardRouter from "./routes/dasboard.route.js"
 const app = express();
 
 
@@ -43,6 +45,8 @@ app.use("api/v1/cart", cartRouter);
 app.use("api/v1/order", orderRouter);
 app.use("api/v1/address", addressRouter);
 app.use("api/v1/getCategories", getCategories);
+app.use("api/v1", offerRouter);
+app.use("api/v1/dashboard", dashBoardRouter);
 
 // error handling
 app.all("*", (req, res, next) => {
