@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import express from 'express';
 import connectDB from "./services/db.js";
 import userRoutes from './routes/user.routes.js'
@@ -45,7 +44,7 @@ app.use("api/v1/cart", cartRouter);
 app.use("api/v1/order", orderRouter);
 app.use("api/v1/address", addressRouter);
 app.use("api/v1/getCategories", getCategories);
-app.use("api/v1", offerRouter);
+app.use("api/v1/", offerRouter);
 app.use("api/v1/dashboard", dashBoardRouter);
 
 // error handling

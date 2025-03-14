@@ -111,6 +111,11 @@ const removeProductVariant = asyncHandler(async (req, res, next) => {
     if (!updatedProduct) {
         throw new ServerApiError(AppStrings.notAbleToCreateEntry);
     }
+
+    if (updatedProduct.variants.length == 0) {
+        Product.findByIdAndDelete(updatedProduct.id);
+    }
+
     res.status(200).send(new ApiResponse({ status: 200, message: "Success!", data: null }))
 });
 
