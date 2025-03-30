@@ -63,7 +63,10 @@ const loginUser = asyncHandler(async (req, res, next) => {
       // create refresh Token  with 10 days expiry
       // create accessToken with 1 day expiry
 
+      console.log(req.body)
+
       const { email, password } = req.body;
+
       if ([email, password].some((entry) => {
             return entry.trim() === ""
       })) {
@@ -72,12 +75,14 @@ const loginUser = asyncHandler(async (req, res, next) => {
 
 
       const user = await User.findOne({ email: email });
-      console.log(user);
+
       if (!user) {
-            next(new NotFoundException())
+            next(new NotFoundException({ "NON": 1 }))
+            return;
       }
 
       const isValidPassword = await bcrypt.compare(password, user.password);
+
 
       if (!isValidPassword) {
             throw new UnauthorizationException({ message: AppStrings.allParamsRequired });

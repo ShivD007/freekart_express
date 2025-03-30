@@ -3,71 +3,60 @@ import { AppStrings } from "../constants/app.strings.js";
 export class ApiError extends Error {
     constructor(
         message = "SomeThing Went Wrong!",
-        stack = "",
         statusCode,
-        errors = [],
-
+        data,
     ) {
-
         super(message);
         this.message = message;
         this.statusCode = statusCode;
-        this.errors = errors;
-        this.data = null;
+        this.data = data;
         this.success = false;
-
-        if (stack) {
-            this.stack = stack;
-        } else {
-            Error.captureStackTrace(this, this.constructor);
-        }
-
     }
 }
 
 
 export class BadRequestException extends ApiError {
-    constructor(message, stack, errors) {
-        super(message, stack, 400, errors)
+    constructor(message,) {
+        super(message, 400)
     }
 }
 
 export class TokenExpirationException extends ApiError {
-    constructor(stack, errors) {
-        super("JWT Token Expired!", stack, 401, errors);
+    constructor() {
+        super("JWT Token Expired!", 401);
     }
 }
 export class UnauthorizationException extends ApiError {
-    constructor(stack, errors, { message }) {
-        super(message || "User is unauthorized!", stack, 403, errors);
+    constructor({ message }) {
+        super(message || "User is unauthorized!", 403);
     }
 }
 export class NotFoundException extends ApiError {
-    constructor(stack, errors) {
-        super("Not found...", stack, 404, errors);
+    constructor(data) {
+        super("Not found...", 404, data);
     }
 }
 
 export class LimitExceededException extends ApiError {
-    constructor(stack, errors) {
-        super("Limit exceeded!", stack, 408, errors);
+    constructor() {
+        super("Limit exceeded!", 408);
     }
 }
 
 export class ConflictException extends ApiError {
-    constructor(message, stack, errors) {
-        super(message, stack, 409, errors);
+    constructor(message,) {
+        super(message, 409);
     }
 }
 export class UniversalApiError extends ApiError {
-    constructor(message, stack, statusCode) {
-        super(message, stack, statusCode);
+    constructor(message, statusCode) {
+        super(message, statusCode);
     }
 }
 
 export class ServerApiError extends ApiError {
-    constructor(message, stack) {
-        super(message || AppStrings.serverError, stack, 500);
+    constructor(message,) {
+        super(message || AppStrings.serverError, 500);
     }
 }
 
