@@ -34,18 +34,19 @@ app.use(tokenAuthentication);
 //-----------------------Admin------------------------------//
 
 //admin
-app.use("api/v1/admin/setCategory", categoryRouter);
+app.use("/api/v1/admin/setCategory", categoryRouter);
 
 
 //-----------------------Admin-end------------------------------//
 
-app.use("api/v1/product", productRouter);
-app.use("api/v1/cart", cartRouter);
-app.use("api/v1/order", orderRouter);
-app.use("api/v1/address", addressRouter);
-app.use("api/v1/getCategories", getCategories);
-app.use("api/v1/", offerRouter);
-app.use("api/v1/dashboard", dashBoardRouter);
+app.use("/api/v1/product", productRouter);
+app.use("/api/v1/cart", cartRouter);
+app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/address", addressRouter);
+app.use("/api/v1/getCategories", getCategories);
+app.use("/api/v1", offerRouter);
+app.use("/api/v1/dashboard", dashBoardRouter);
+
 
 // error handling
 app.all("*", (req, res, next) => {
