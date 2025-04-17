@@ -20,8 +20,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
       }
 
 
-      const existedUser = User.findOne({ email: email });
-      console.log(existedUser);
+      const existedUser = await User.findOne({ email: email });
       if (existedUser) {
             res.status(200)
                   .send(new ApiResponse({ status: 200, message: "User Already exists", data: null }))
@@ -40,9 +39,11 @@ const registerUser = asyncHandler(async (req, res, next) => {
             }
       )
 
-      const createdUser = User.findById(user._id).select(
+      const createdUser = await User.findById(user._id).select(
             "-password",
       )
+
+      console.log(createdUser);
 
       if (!createdUser) {
             next(new UniversalApiError("Not able to create user! Internal Server error", 500));
@@ -97,7 +98,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
 
       res.status(200).send(new ApiResponse({
             status: 200, message: "User Logined successfully!",
-            data: { ...{ id: user._id, email: user.email, phoneNo: user.phoneNo }, refreshToken, accessToken },
+            data: { ...{ id: user._id, email: user.email, phoneNo: user.phoneNo, fullName: user.fullName }, refreshToken, accessToken },
       },
       ));
 })
