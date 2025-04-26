@@ -25,6 +25,13 @@ connectDB((req, res, next) => {
     });
 })();
 
+
+app.use((req, res, next) => {
+    console.log(`Incoming request: ${req.method} ${req.originalUrl}`);
+    console.log(req.body);
+
+    next(); // Don't forget to call next()!
+});
 // routes
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/generateToken", generateToken);
@@ -34,8 +41,8 @@ app.use(tokenAuthentication);
 //-----------------------Admin------------------------------//
 
 //admin
-app.use("/api/v1/admin/setCategory", categoryRouter);
 
+app.use("/api/v1/admin/setCategory", categoryRouter);
 
 //-----------------------Admin-end------------------------------//
 

@@ -6,7 +6,8 @@ import { ApiResponse } from "../response/response.js";
 
 // this is for location Api
 const setCategory = asyncHandler(async (req, res, next) => {
-    const { image, name } = req.body;
+
+    const { name, image } = req.body;
 
     [image, name].some((e) => {
         if (e.trim() === "") throw new BadRequestException(AppStrings.allParamsRequired)

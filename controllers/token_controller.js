@@ -6,23 +6,26 @@ import { ApiResponse } from "../response/response.js";
 
 
 const createToken = ({ payload, expiryTime }) => {
-    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: expiryTime != null ? expiryTime * 10 * 60 : null })
+    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: expiryTime != null ? expiryTime * 20 * 60 : null })
     return token;
 }
 
 const tokenAuthentication = asyncHandler(async (req, res, next) => {
-    const token = req.body.accessToken || req.query.accessToken;
-
+    const token = req.body.accessToken || req.query.accessToken || req.headers.authorization
     if (!token) {
         next(new BadRequestException("Jwt Token Required!"))
     }
-    const decodedPassword = jwt.verify(token, process.env.JWT_KEY, (error, user) => {
+    const decodedUser = jwt.verify(token, process.env.JWT_KEY, (error, user) => {
+        if (!error) {
+            return user;
+        }
         if (error.name === "TokenExpiredError") {
             next(new TokenExpirationException());
         } else {
             next(new BadRequestException(error.message));
         }
     });
+    req.headers.users = decodedUser;
     next();
 })
 
@@ -39,7 +42,7 @@ const createTokenUsingRefreshToken = asyncHandler((req, res, next) => {
     let decodedUser;
     jwt.verify(token, process.env.JWT_KEY, (error, user) => {
         if (error) {
-            if (error.name === "TokenExpiredError") {
+            if (error?.name === "TokenExpiredError") {
                 next(new TokenExpirationException());
             } else {
                 next(new BadRequestException(error.message));
