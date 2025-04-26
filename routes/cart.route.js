@@ -3,7 +3,7 @@ import { addToCart, deleteFromCart, getCartItems, updateCart } from "../controll
 
 const router = Router();
 
-router.route("/").post(addToCart).get(getCartItems).put(updateCart).delete(deleteFromCart);
+router.route("").post(addToCart).get(getCartItems).put(updateCart).delete(deleteFromCart);
 
 
 

@@ -4,7 +4,7 @@ import userRoutes from './routes/user.routes.js'
 import { ApiError, NotFoundException } from './response/apiError.js'
 import { ApiResponse } from './response/response.js'
 import { createTokenUsingRefreshToken as generateToken, tokenAuthentication } from "./controllers/token_controller.js";
-import { getCategories, setCategory } from "./controllers/category_controller.js";
+import { setCategory } from "./controllers/category_controller.js";
 import productRouter from "./routes/product.route.js"
 import cartRouter from "./routes/cart.route.js"
 import orderRouter from "./routes/order.route.js"
@@ -41,16 +41,14 @@ app.use(tokenAuthentication);
 //-----------------------Admin------------------------------//
 
 //admin
-
 app.use("/api/v1/admin/setCategory", categoryRouter);
-
 //-----------------------Admin-end------------------------------//
 
 app.use("/api/v1/product", productRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/order", orderRouter);
 app.use("/api/v1/address", addressRouter);
-app.use("/api/v1/getCategories", getCategories);
+app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1", offerRouter);
 app.use("/api/v1/dashboard", dashBoardRouter);
 

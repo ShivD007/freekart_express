@@ -6,7 +6,7 @@ import { ApiResponse } from "../response/response.js";
 
 
 const createToken = ({ payload, expiryTime }) => {
-    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: expiryTime != null ? expiryTime * 20 * 60 : null })
+    const token = jwt.sign(payload, process.env.JWT_KEY, { expiresIn: expiryTime != null ? expiryTime * 60 * 60 : null })
     return token;
 }
 

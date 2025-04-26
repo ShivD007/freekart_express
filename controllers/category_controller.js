@@ -6,7 +6,6 @@ import { ApiResponse } from "../response/response.js";
 
 // this is for location Api
 const setCategory = asyncHandler(async (req, res, next) => {
-
     const { name, image } = req.body;
 
     [image, name].some((e) => {
@@ -16,9 +15,8 @@ const setCategory = asyncHandler(async (req, res, next) => {
     const category = await Category.findOne({ name: name.trim() });
 
     if (category) throw new ConflictException(AppStrings.anEntryExists)
-
     const savedCategory = await Category.create({ name: name, image: image });
-
+    console.log(savedCategory)
     res.status(200).send(new ApiResponse({ status: 200, message: "Category Created!", data: savedCategory }))
 });
 
@@ -47,7 +45,7 @@ const updateCategory = asyncHandler(async (req, res, next) => {
 });
 
 
-const getCategories = asyncHandler(async (req, res, next) => {
+const getCategory = asyncHandler(async (req, res, next) => {
     const { name } = req.query;
 
     const categories = Category.find({ name: { $regex: name ?? "", option: "i" } })
@@ -60,5 +58,12 @@ const getCategories = asyncHandler(async (req, res, next) => {
 })
 
 
+const getAllCategories = asyncHandler(async (req, res, next) => {
 
-export { setCategory, updateCategory, getCategories }
+    const categories = await Category.find()
+    res.status(200).send(new ApiResponse({ message: "Success", status: 200, data: categories }));
+
+})
+
+
+export { setCategory, updateCategory, getCategory, getAllCategories }
