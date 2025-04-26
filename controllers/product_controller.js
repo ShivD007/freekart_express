@@ -91,7 +91,7 @@ const updateProduct = asyncHandler(async (req, res, next) => {
         throw new BadRequestException('Invalid input, expected an array of books')
     }
 
-    const updatedProduct = await Product.findOneAndreplace({ _id: product.id }, { product }, { upsert: false })
+    const updatedProduct = await Product.findOneAndReplace({ _id: product.id }, { product }, { upsert: false })
 
     if (!updatedProduct) {
         throw new ServerApiError(AppStrings.notAbleToCreateEntry);

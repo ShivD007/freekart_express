@@ -30,7 +30,32 @@ const createOffer = asyncHandler(async (req, res, next) => {
 
 const getOffers = asyncHandler(async (req, res, next) => {
 
-    const offers = await Offer.find({}).populate("products");
+    const { page, limit } = req.query;
+    const pageNumber = parseInt(page) || 1;
+    const limitNumber = parseInt(limit) || 10;
+
+    if (pageNumber <= 0 || limitNumber <= 0) {
+        next(new BadRequestException(AppStrings.invalidInput))
+    }
+
+    const skip = (pageNumber - 1) * limitNumber;
+
+    const [allOffers, totalOffers] = await Promise.all([
+        Offer.find({})
+            .populate("products")
+            .skip(skip)
+            .limit(limitNumber),
+        Offer.countDocuments({})
+
+    ]);
+
+    const offers = {
+        page: pageNumber,
+        limit: limitNumber,
+        totalOffers: totalOffers,
+        totalPages: Math.ceil(totalOffers / limitNumber),
+        offers: allOffers
+    }
 
     res.status(200).send(new ApiResponse({ status: 200, message: AppStrings.successful, data: offers }))
 });
