@@ -13,7 +13,10 @@ const getDashboard = asyncHandler(async (req, res) => {
     ])
 
     let products = await Product.aggregate([
-        { $sample: { size: 4 } }
+        { $sample: { size: 4 } },
+        { $lookup: { from: "categories", localField: "category", foreignField: "_id", as: "category" } },
+        { $unwind: "$category" },
+
     ])
 
     let offers = await Offer.aggregate([
