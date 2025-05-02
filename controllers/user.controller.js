@@ -75,7 +75,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
       }
 
 
-      const user = await User.findOne({ email: email });
+      const user = await User.findOne({ email: email }).populate("address");
 
       if (!user) {
             next(new NotFoundException({ "NON": 1 }))
