@@ -44,12 +44,12 @@ const getProduct = asyncHandler(async (req, res, next) => {
 
 const getAllProduct = asyncHandler(async (req, res, next) => {
 
-    const page = parseInt(req.body.page) || 1;  // Default to page 1
-    const limit = parseInt(req.body.limit) || 10;  // Default to 5 users per page
+    const page = parseInt(req.query.page) || 1;  // Default to page 1
+    const limit = parseInt(req.query.limit) || 10;  // Default to 5 users per page
     if (limit <= 0 || page <= 0) {
         next(new BadRequestException(AppStrings.invalidInput))
     }
-    const categoryId = req.body.categoryId;
+    const categoryId = req.query.categoryId;
 
     const startIndex = (page - 1) * limit;
 
@@ -69,11 +69,8 @@ const getAllProduct = asyncHandler(async (req, res, next) => {
 
     // Execute the query
     const products = await query.exec();
-    if (!products) {
-        res.status(200).send(new ApiResponse({ status: 200, message: "Success!", data: { "products": [], page: page, limit: limit } }))
 
-    }
-    res.status(200).send(new ApiResponse({ status: 200, message: "Success!", data: { "products": products, page: page + 1, limit: limit } }))
+    res.status(200).send(new ApiResponse({ status: 200, message: "Success!", data: { "products": products || [], page: page, limit: limit } }))
 },)
 
 
