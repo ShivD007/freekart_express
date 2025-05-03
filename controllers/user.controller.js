@@ -92,7 +92,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
       delete user.password;
 
       const refreshToken = createToken({ payload: { email: user.email, phoneNo: user.phoneNo, id: user._id }, expiryTime: 24 * 60 })
-      const accessToken = createToken({ payload: { email: user.email, phoneNo: user.phoneNo, id: user._id }, expiryTime: 2 })
+      const accessToken = createToken({ payload: { email: user.email, phoneNo: user.phoneNo, id: user._id }, expiryTime: 10 })
 
 
 

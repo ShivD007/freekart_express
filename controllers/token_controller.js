@@ -61,7 +61,7 @@ const createTokenUsingRefreshToken = asyncHandler(async (req, res, next) => {
     const user = await User.findById(decodedUser.id).populate("address").select("-password");
 
     const refreshToken = createToken({ payload: { email: decodedUser.email, phoneNo: decodedUser.phoneNo, id: decodedUser.id }, expiryTime: 24 * 60 })
-    const accessToken = createToken({ payload: { email: decodedUser.email, phoneNo: decodedUser.phoneNo, id: decodedUser.id }, expiryTime: 2 })
+    const accessToken = createToken({ payload: { email: decodedUser.email, phoneNo: decodedUser.phoneNo, id: decodedUser.id }, expiryTime: 10 })
 
 
     res.status(200).send(new ApiResponse({
