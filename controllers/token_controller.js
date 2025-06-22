@@ -45,8 +45,7 @@ const createTokenUsingRefreshToken = asyncHandler(async (req, res, next) => {
         if (error) {
             if (error?.name === "TokenExpiredError") {
                 next(new TokenExpirationException());
-            } else {
-                next(new BadRequestException(error.message));
+
             }
         }
 

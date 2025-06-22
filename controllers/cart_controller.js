@@ -8,30 +8,44 @@ import asyncHandler from "../response/asyncHandler.js";
 import { ApiResponse } from "../response/response.js";
 
 const addToCart = asyncHandler(async (req, res, next) => {
-      const { productId, variantId, userId, quantity } = req.body;
+      const { productId, variantId, quantity } = req.body;
 
-      if (!userId) {
+
+      if ([productId, variantId, quantity].some((entry) => {
+            return entry == null
+      })) {
             throw new BadRequestException(AppStrings.allParamsRequired)
       }
 
-      const user = await User.findById(userId);
-
-      const subProduct = (await Product.findById(productId)).variants.id(variantId);
+      const user = await User.findById(req.headers.users.id);
+      const product = await Product.findById(productId);
+      const subProduct = product.variants.id(variantId);
+      if (!subProduct) {
+            return res.status(404).send(new BadRequestException({
+                  message: "Variant not found",
+            }));
+      }
 
       const mrp = subProduct.mrp;
       const discount = subProduct.discount;
       const priceAfterDiscount = discount == null ? mrp : mrp - discount;
 
-
+      const cartItem = await Cart.findOne({ "productId": productId, "variant._id": variantId });
+      console.log(cartItem)
+      if (cartItem) {
+            res.status(200).send(new ApiResponse({ status: 200, message: AppStrings.successful, data: null }))
+            return;
+      }
       const cart = new Cart({
             productId: productId,
             association: user,
             quantity: quantity,
             mrp: mrp,
+            variant: subProduct,
             discount: discount,
             priceAfterDiscount: priceAfterDiscount
       })
-      cart.save();
+      await cart.save();
 
       res.status(200).send(new ApiResponse({ status: 200, message: AppStrings.successful, data: null }))
 
@@ -39,16 +53,14 @@ const addToCart = asyncHandler(async (req, res, next) => {
 
 
 const getCartItems = asyncHandler(async (req, res, next) => {
-      const { userId } = req.body;
+      const userId = req.headers.users.id;
 
       if (!userId) {
             throw new BadRequestException(AppStrings.allParamsRequired)
       }
 
       const cart = await Cart.find({
-            "$elemMatch": {
-                  "association": mongoose.Types.ObjectId(userId)
-            }
+            "association": userId
       })
 
       if (!cart) {
@@ -81,10 +93,9 @@ const getCartItems = asyncHandler(async (req, res, next) => {
 const updateCart = asyncHandler(async (req, res, next) => {
       const { cartId, productId, variantId, quantity } = req.body;
 
-      const cart = await Cart.findById(cartId)
 
       if (quantity == 0) {
-            deleteItemFromCart(cartId)
+            await deleteItemFromCart(cartId)
       }
 
       const subProduct = (await Product.findById(productId)).variants.id(variantId);
@@ -118,18 +129,16 @@ const updateCart = asyncHandler(async (req, res, next) => {
 
 
 const deleteFromCart = asyncHandler(async (req, res, next) => {
-
       const { cartId } = req.body;
-
       await deleteItemFromCart(cartId);
-
+      res.status(200).send(new ApiResponse({ status: 200, message: AppStrings.successful, data: null }))
 })
 
 
 
 const deleteItemFromCart = async (cartId) => {
 
-      await Cart.deleteOne(cartId)
+      await Cart.deleteOne({ _id: cartId })
 
 }
 

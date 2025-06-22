@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { subProductSchema } from "./sub_product.model.js";
 
 
 const cartSchema = new mongoose.Schema({
@@ -6,8 +7,8 @@ const cartSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    variantId: {
-        type: String,
+    variant: {
+        type: subProductSchema,
         required: true
     },
     association: {

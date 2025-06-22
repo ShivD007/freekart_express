@@ -10,7 +10,7 @@ const updateUserAddress = asyncHandler(async (req, res, next) => {
     const address = req.body.address
     const pincode = req.body.pincode
     const alternateMobileNo = req.body.alternateMobileNo
-    const userId = req.body.userId;
+    const userId = req.headers.users.id;
 
     let user = await User.findById(userId);
 

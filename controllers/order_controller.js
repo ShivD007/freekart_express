@@ -10,7 +10,7 @@ import mongoose from "mongoose";
 
 const addOrder = asyncHandler(async (req, res, next) => {
 
-    const { userId } = req.body;
+    const userId = req.headers.users.id;
     if (!userId) next(new BadRequestException())
 
     const currentCartItems = await Cart.find({

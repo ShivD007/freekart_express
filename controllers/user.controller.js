@@ -75,8 +75,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
       }
 
 
-      const user = await User.findOne({ email: email }).populate("address");
-
+      const user = await (User.findOne({ email: email }).populate("address"));
       if (!user) {
             next(new NotFoundException({ "NON": 1 }))
             return;
@@ -98,7 +97,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
 
       res.status(200).send(new ApiResponse({
             status: 200, message: "User Logined successfully!",
-            data: { ...{ id: user._id, email: user.email, phoneNo: user.phoneNo, fullName: user.fullName }, refreshToken, accessToken },
+            data: { ...{ id: user._id, email: user.email, phoneNo: user.phoneNo, fullName: user.fullName, address: user.address }, refreshToken, accessToken },
       },
       ));
 })

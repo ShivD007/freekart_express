@@ -10,7 +10,7 @@ const setProduct = asyncHandler(async (req, res, next) => {
 
     // Check if variants is an array
     if (!Array.isArray(product["variants"])) {
-        throw new BadRequestException('Invalid input, expected an array of books')
+        throw new BadRequestException('Invalid input, expected an array of products')
     }
 
     const createdProduct = await Product.create(product)
@@ -45,7 +45,7 @@ const getProduct = asyncHandler(async (req, res, next) => {
 const getAllProduct = asyncHandler(async (req, res, next) => {
 
     const page = parseInt(req.query.page) || 1;  // Default to page 1
-    const limit = parseInt(req.query.limit) || 10;  // Default to 5 users per page
+    const limit = parseInt(req.query.limit) || 10;  // Default to 10 product per page
     if (limit <= 0 || page <= 0) {
         next(new BadRequestException(AppStrings.invalidInput))
     }

@@ -14,6 +14,7 @@ const productSchema = new mongoose.Schema({
 
     frequentVariant: subProductSchema,
 
+
 }, { timestamps: true });
 
 
