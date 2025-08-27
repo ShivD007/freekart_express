@@ -1,0 +1,42 @@
+const product = await Product.findById(productId);
+
+const variant = product.variants.find(v => v.name === '100ml Bottle');
+
+if (variant) {
+  console.log('Variant found:', variant);
+} else {
+  console.log('Variant not found');
+}
+
+
+
+
+// alternative
+
+🧠 Alternative: Find Using Mongoose Query (less efficient for embedded docs)
+
+You can't directly query an embedded document in an array and get only that subdoc with .findOne() easily, but you can use a filter:
+
+const product = await Product.findOne({
+  _id: productId,
+  'variants.name': '100ml Bottle'
+});
+
+This only confirms that a matching subdocument exists, but doesn’t extract it for you. You’d still need to manually search inside product.variants.
+
+
+
+Note: alternative method will find all product with matching 
+varient name but return all variants list 
+
+
+
+
+
+
+
+Point 2:
+Find by id
+
+
+const product = (await Product.findById(productId)).variants.id("id")

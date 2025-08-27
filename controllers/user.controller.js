@@ -75,8 +75,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
       }
 
 
-      const user = await User.findOne({ email: email });
-
+      const user = await (User.findOne({ email: email }).populate("address"));
       if (!user) {
             next(new NotFoundException({ "NON": 1 }))
             return;
@@ -91,14 +90,14 @@ const loginUser = asyncHandler(async (req, res, next) => {
 
       delete user.password;
 
-      const refreshToken = createToken({ payload: { email: user.email, phoneNo: user.phoneNo, id: user._id }, expiryTime: 24 })
-      const accessToken = createToken({ payload: { email: user.email, phoneNo: user.phoneNo, id: user._id }, expiryTime: 1 })
+      const refreshToken = createToken({ payload: { email: user.email, phoneNo: user.phoneNo, id: user._id }, expiryTime: 24 * 60 })
+      const accessToken = createToken({ payload: { email: user.email, phoneNo: user.phoneNo, id: user._id }, expiryTime: 10 })
 
 
 
       res.status(200).send(new ApiResponse({
             status: 200, message: "User Logined successfully!",
-            data: { ...{ id: user._id, email: user.email, phoneNo: user.phoneNo, fullName: user.fullName }, refreshToken, accessToken },
+            data: { ...{ id: user._id, email: user.email, phoneNo: user.phoneNo, fullName: user.fullName, address: user.address }, refreshToken, accessToken },
       },
       ));
 })

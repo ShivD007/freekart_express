@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 });
 // routes
 app.use("/api/v1/users", userRoutes);
-app.use("/api/v1/generateToken", generateToken);
+app.post("/api/v1/generateToken", generateToken);
 
 
 app.use(tokenAuthentication);
